@@ -2,6 +2,8 @@
 
 This is a simple tool to mimic the output of `go tool cover` but with a prettier html page.  Work in progress.
 
+![img](assets/example.png)
+
 ## Installation
 
 ```bash
@@ -36,7 +38,7 @@ go run .
 ## Semi-Live reloading
 Run the [example](#Example) then
 
-~Optional~ Uncomment refresh line in [index.html](go/cover/index.html)
+Optional Uncomment refresh line in [index.html](go/cover/index.html)
 
 ```shell
 air
