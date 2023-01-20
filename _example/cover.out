@@ -1,0 +1,13 @@
+mode: set
+github.com/skelouse/cover-pretty/_example/lib/func.go:3.31,4.7 1 0
+github.com/skelouse/cover-pretty/_example/lib/func.go:8.2,8.13 1 0
+github.com/skelouse/cover-pretty/_example/lib/func.go:4.7,6.3 1 0
+github.com/skelouse/cover-pretty/_example/func.go:3.28,4.7 1 1
+github.com/skelouse/cover-pretty/_example/func.go:8.2,8.13 1 0
+github.com/skelouse/cover-pretty/_example/func.go:4.7,6.3 1 1
+github.com/skelouse/cover-pretty/_example/lib/func.go:3.31,4.7 1 1
+github.com/skelouse/cover-pretty/_example/lib/func.go:8.2,8.13 1 0
+github.com/skelouse/cover-pretty/_example/lib/func.go:4.7,6.3 1 1
+github.com/skelouse/cover-pretty/_example/func.go:3.28,4.7 1 0
+github.com/skelouse/cover-pretty/_example/func.go:8.2,8.13 1 0
+github.com/skelouse/cover-pretty/_example/func.go:4.7,6.3 1 0
