@@ -38,7 +38,9 @@ go run .
 ## Semi-Live reloading
 Run the [example](#Example) then
 
-Optional Uncomment refresh line in [index.html](go/cover/index.html)
+Optional Uncomment refresh line in [index.html](go/cover/index.html#L4)
+
+Open [index.html](go/cover/index.html) in your browser
 
 ```shell
 air

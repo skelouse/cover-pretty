@@ -6,7 +6,7 @@ tmp_dir = "tmp"
   args_bin = []
   bin = "./tmp/air-main"
   cmd = "go run . -out=assets/index.html"
-  delay = 0
+  delay = 1
   exclude_dir = ["assets", "tmp", "vendor"]
   exclude_file = []
   exclude_regex = []

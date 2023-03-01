@@ -44,3 +44,6 @@ github.com/skelouse/cover-pretty/_example/util.go:17.15,21.31 4 0
 github.com/skelouse/cover-pretty/_example/util.go:21.31,23.34 2 0
 github.com/skelouse/cover-pretty/_example/util.go:23.34,25.5 1 0
 github.com/skelouse/cover-pretty/_example/util.go:29.2,36.36 6 0
+github.com/skelouse/cover-pretty/_example/lib/inner/func.go:3.36,4.7 1 1
+github.com/skelouse/cover-pretty/_example/lib/inner/func.go:4.7,6.3 1 1
+github.com/skelouse/cover-pretty/_example/lib/inner/func.go:8.2,8.13 1 0

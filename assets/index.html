@@ -1,38 +1,53 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	
-	
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Go Coverage Report</title>
-	<style>body {
-    background: black;
-    color: rgb(80, 80, 80);
+  <head>
+    
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+      lib: Go Coverage Report
+    </title>
+    <style>body {
+  background: black;
+  color: rgb(80, 80, 80);
 }
-body, pre, #legend span {
-    font-family: Menlo, monospace;
-    font-weight: bold;
+body,
+pre,
+#legend span {
+  font-family: Menlo, monospace;
+  font-weight: bold;
 }
 #topbar {
-    background: black;
-    top: 0; left: 0; right: 0;
-    height: 42px;
-    border-bottom: 1px solid rgb(80, 80, 80);
+  background: black;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px;
+  border-bottom: 1px solid rgb(80, 80, 80);
 }
-#nav, #legend {
-    float: left;
-    margin-left: 10px;
+#nav,
+#legend {
+  float: left;
+  margin-left: 10px;
 }
 #legend {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 #nav {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 #legend span {
-    margin: 0 5px;
+  margin: 0 5px;
 }
+
+/* Add padding to a nested optgroup, note simply doing "padding-left: 10px" will not work */
+.folder-file-select-2 optgroup {
+    padding-left: 10px;
+  }
+  
+  .folder-file-select-2 optgroup label {
+    text-indent: -10px;
+  }
 .cov0 { color: rgb(192, 0, 0) }
 .cov1 { color: rgb(128, 128, 128) }
 .cov2 { color: rgb(116, 140, 131) }
@@ -45,43 +60,64 @@ body, pre, #legend span {
 .cov9 { color: rgb(32, 224, 152) }
 .cov10 { color: rgb(20, 236, 155) }
 </style>
-</head>
+  </head>
 
-<body>
-	<h1>github.com/skelouse/cover-pretty/_example/</h1>
-	<div id="topbar">
-		<div id="nav">
-			<select id="folders">
-				
-				
-				
-				<option class="file-select" value="file0">func.go (66.7%)
-				</option>
-				
-				
-				
-				
-				<optgroup class="folder-file-select" label="lib/">
-					
-					<option value="file1">func.go (66.7%)</option>
-					
-				</optgroup>
-				
-				
-			</select>
-		</div>
-		<div id="legend">
-			<span>not tracked</span>
-			
-			<span class="cov0">not covered</span>
-			<span class="cov8">covered</span>
-			
-		</div>
-	</div>
+  <body>
+    <h1>github.com/skelouse/cover-pretty/_example/</h1>
+    <div id="topbar">
+      <div id="nav">
+        
 
-	<div id="content">
-		
-		<pre class="file" id="file0" style="display: none">package example
+        <select id="folders">
+            
+        <option class="file-select" value="file0">
+          func.go (6.7%)
+        </option>
+             
+        <optgroup class="folder-file-select" label="lib">
+          
+        <option class="file-select" value="file1">
+          func.go (66.7%)
+        </option>
+          
+        <optgroup class="folder-file-select" label="‎ ‎ ‎ inner">
+          
+        <option class="file-select" value="file2">
+          ‎ ‎ ‎ func.go (66.7%)
+        </option>
+          
+        </optgroup>
+          
+        </optgroup>
+             
+        <option class="file-select" value="file3">
+          shuffle.go (0.0%)
+        </option>
+             
+        <option class="file-select" value="file4">
+          util.go (0.0%)
+        </option>
+           
+        </select>
+      </div>
+      <div id="legend">
+        <span>not tracked</span>
+        
+        <span class="cov0">not covered</span>
+        <span class="cov8">covered</span>
+        
+      </div>
+    </div>
+
+    <div id="content">
+      
+      <pre class="file" id="file0" style="display: none">package example
+
+import (
+        "math/rand"
+        "strings"
+        "time"
+)
 
 func Function(a bool) bool <span class="cov8" title="1">{
         if a </span><span class="cov8" title="1">{
@@ -90,9 +126,91 @@ func Function(a bool) bool <span class="cov8" title="1">{
 
         <span class="cov0" title="0">return true</span>
 }
+
+// https://github.com/XANi/loremipsum
+// LoremIpsum is a lorem ipsum generator
+type LoremIpsum struct {
+        first bool
+        words []string
+        idx   int
+        rng   *rand.Rand
+}
+
+// New returns new instance of LoremIpsum
+func New() *LoremIpsum <span class="cov0" title="0">{
+        return NewWithSeed(time.Now().Unix())
+}</span>
+
+// New returns new instance of LoremIpsum with PRNG seeded with the parameter
+func NewWithSeed(seed int64) *LoremIpsum <span class="cov0" title="0">{
+        li := new(LoremIpsum)
+        li.rng = rand.New(rand.NewSource(seed))
+        li.first = true
+        li.idx = 0
+        li.shuffle()
+        return li
+}</span>
+
+// Word returns a single word of lorem ipsum
+func (li *LoremIpsum) Word() string <span class="cov0" title="0">{
+        return li.words[li.rng.Intn(len(li.words))]
+}</span>
+
+// WordList returns list of words of lorem ipsum
+func (li *LoremIpsum) WordList(count int) []string <span class="cov0" title="0">{
+        return li.words[:count]
+}</span>
+
+// Words returns words of lorem ipsum
+func (li *LoremIpsum) Words(count int) string <span class="cov0" title="0">{
+        return strings.Join(li.WordList(count), " ")
+}</span>
+
+// Sentence returns full sentence of lorem ipsum
+func (li *LoremIpsum) Sentence() string <span class="cov0" title="0">{
+        l := int(li.gauss(24.46, 5.08))
+        words := li.words[:l]
+        return li.punctuate(words)
+}</span>
+
+// SentenceList returns list of sentences of lorem ipsum
+func (li *LoremIpsum) SentenceList(count int) []string <span class="cov0" title="0">{
+        var sentences []string
+        sentences = make([]string, count)
+        for idx := range sentences </span><span class="cov0" title="0">{
+                sentences[idx] = li.Sentence()
+                li.shuffle()
+        }</span>
+        <span class="cov0" title="0">return sentences</span>
+}
+
+// Sentences returns sentences of lorem ipsum
+func (li *LoremIpsum) Sentences(count int) string <span class="cov0" title="0">{
+        return strings.Join(li.SentenceList(count), " ")
+}</span>
+
+// Paragraph returns full paragraph of lorem ipsum
+func (li *LoremIpsum) Paragraph() string <span class="cov0" title="0">{
+        return li.Sentences(int(li.gauss(5.8, 1.93)))
+}</span>
+
+// ParagraphList returns list of paragraphs of lorem ipsum
+func (li *LoremIpsum) ParagraphList(count int) []string <span class="cov0" title="0">{
+        var paragraphs []string
+        paragraphs = make([]string, count)
+        for idx := range paragraphs </span><span class="cov0" title="0">{
+                paragraphs[idx] = li.Paragraph()
+        }</span>
+        <span class="cov0" title="0">return paragraphs</span>
+}
+
+// Paragraphs returns paragraphs of lorem ipsum
+func (li *LoremIpsum) Paragraphs(count int) string <span class="cov0" title="0">{
+        return strings.Join(li.ParagraphList(count), "\\n")
+}</span>
 </pre>
-		
-		<pre class="file" id="file1" style="display: none">package example
+      
+      <pre class="file" id="file1" style="display: none">package example
 
 func LibFunction(a bool) bool <span class="cov8" title="1">{
         if a </span><span class="cov8" title="1">{
@@ -102,36 +220,162 @@ func LibFunction(a bool) bool <span class="cov8" title="1">{
         <span class="cov0" title="0">return true</span>
 }
 </pre>
-		
-	</div>
-</body>
-<script>
-	(function () {
-		var files = document.getElementById('folders');
-		var visible;
-		files.addEventListener('change', onChange, false);
-		function select(part) {
-			if (visible)
-				visible.style.display = 'none';
-			visible = document.getElementById(part);
-			if (!visible)
-				return;
-			files.value = part;
-			visible.style.display = 'block';
-			location.hash = part;
-		}
-		function onChange() {
-			select(files.value);
-			window.scrollTo(0, 0);
-		}
-		if (location.hash != "") {
-			select(location.hash.substr(1));
-		}
-		if (!visible) {
-			select("file0");
-			window.scrollTo(0, 0);
-		}
-	})();
-</script>
+      
+      <pre class="file" id="file2" style="display: none">package example
 
+func LibInnerFunction(a bool) bool <span class="cov8" title="1">{
+        if a </span><span class="cov8" title="1">{
+                return false
+        }</span>
+
+        <span class="cov0" title="0">return true</span>
+}
+</pre>
+      
+      <pre class="file" id="file3" style="display: none">package example
+
+import (
+        "math/rand"
+)
+
+// int31n returns, as an int32, a non-negative pseudo-random number in [0,n).
+// n must be &gt; 0, but int31n does not check this; the caller must ensure it.
+// int31n exists because Int31n is inefficient, but Go 1 compatibility
+// requires that the stream of values produced by math/rand remain unchanged.
+// int31n can thus only be used internally, by newly introduced APIs.
+//
+// For implementation details, see:
+// http://lemire.me/blog/2016/06/27/a-fast-alternative-to-the-modulo-reduction
+// http://lemire.me/blog/2016/06/30/fast-random-shuffling
+func (li *LoremIpsum) int31n(n int32) int32 <span class="cov0" title="0">{
+        v := li.rng.Uint32()
+        prod := uint64(v) * uint64(n)
+        low := uint32(prod)
+        if low &lt; uint32(n) </span><span class="cov0" title="0">{
+                thresh := uint32(-n) % uint32(n)
+                for low &lt; thresh </span><span class="cov0" title="0">{
+                        v = li.rng.Uint32()
+                        prod = uint64(v) * uint64(n)
+                        low = uint32(prod)
+                }</span>
+        }
+        <span class="cov0" title="0">return int32(prod &gt;&gt; 32)</span>
+}
+
+// Shuffle pseudo-randomizes the order of elements.
+// n is the number of elements. Shuffle panics if n &lt; 0.
+// swap swaps the elements with indexes i and j.
+func (li *LoremIpsum) shuffleWords(n int, swap func(i, j int)) <span class="cov0" title="0">{
+        if n &lt; 0 </span><span class="cov0" title="0">{
+                panic("invalid argument to Shuffle")</span>
+        }
+        // Fisher-Yates shuffle: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+        // Shuffle really ought not be called with n that doesn't fit in 32 bits.
+        // Not only will it take a very long time, but with 2³¹! possible permutations,
+        // there's no way that any PRNG can have a big enough internal state to
+        // generate even a minuscule percentage of the possible permutations.
+        // Nevertheless, the right API signature accepts an int n, so handle it as best we can.
+        <span class="cov0" title="0">i := n - 1
+        for ; i &gt; 1&lt;&lt;31-1-1; i-- </span><span class="cov0" title="0">{
+                j := int(rand.Int63n(int64(i + 1)))
+                swap(i, j)
+        }</span>
+        <span class="cov0" title="0">for ; i &gt; 0; i-- </span><span class="cov0" title="0">{
+                j := int(li.int31n(int32(i + 1)))
+                swap(i, j)
+        }</span>
+}
+
+// Shuffle the words
+func (li *LoremIpsum) shuffle() <span class="cov0" title="0">{
+        var words []string
+
+        if !li.first </span><span class="cov0" title="0">{
+                words = make([]string, len(LoremIpsumWords))
+                copy(words, LoremIpsumWords[:])
+        }</span> else<span class="cov0" title="0"> {
+                words = make([]string, len(Rest))
+                copy(words, Rest)
+        }</span>
+        <span class="cov0" title="0">li.shuffleWords(len(words), func(i int, j int) </span><span class="cov0" title="0">{
+                words[i], words[j] = words[j], words[i]
+        }</span>)
+        <span class="cov0" title="0">if li.first </span><span class="cov0" title="0">{
+                b := make([]string, len(Beg))
+                copy(b, Beg)
+                // words, b = b, words
+                // words = append(words, b...)
+                words = append(b, words...)
+        }</span>
+        <span class="cov0" title="0">li.words = words
+        li.first = false</span>
+}
+</pre>
+      
+      <pre class="file" id="file4" style="display: none">package example
+
+import (
+        "math"
+        "strings"
+)
+
+func (li *LoremIpsum) gauss(mean, stdDev float64) float64 <span class="cov0" title="0">{
+        x := li.rng.Float64()
+        y := li.rng.Float64()
+        z := math.Sqrt(-2*math.Log(x)) * math.Cos(2*math.Pi*y)
+        return z*stdDev + mean
+}</span>
+
+func (li *LoremIpsum) punctuate(sentence []string) string <span class="cov0" title="0">{
+        count := len(sentence)
+        if count &gt; 4 </span><span class="cov0" title="0">{
+                mean := math.Log(float64(count)) / math.Log(6.0)
+                stdDev := mean / 6
+                commas := int(li.gauss(mean, stdDev))
+                for i := 1; i &lt; commas; i++ </span><span class="cov0" title="0">{
+                        idx := int(float64(i) * float64(count) / (float64(commas) + 1))
+                        if idx &gt; 0 &amp;&amp; idx &lt; (count-1) </span><span class="cov0" title="0">{
+                                sentence[idx] = sentence[idx] + ","
+                        }</span>
+                }
+        }
+
+        <span class="cov0" title="0">first := strings.Split(sentence[0], "")
+        first[0] = strings.ToUpper(first[0])
+        sentence[0] = strings.Join(first, "")
+
+        lastIdx := count - 1
+        sentence[lastIdx] = sentence[lastIdx] + "."
+
+        return strings.Join(sentence, " ")</span>
+}
+</pre>
+      
+    </div>
+  </body>
+  <script>
+    var files = document.getElementById("folders");
+    var visible;
+    function select(part) {
+      if (visible) visible.style.display = "none";
+      visible = document.getElementById(part);
+      if (!visible) return;
+      files.value = part;
+      visible.style.display = "block";
+      location.hash = "_" + part;
+    }
+    files.addEventListener("change", onChange, false);
+
+    function onChange() {
+      select(files.value);
+      window.scrollTo(0, 0);
+    }
+    if (location.hash != "") {
+      select(location.hash.substr(2));
+    }
+    if (!visible) {
+      select("file0");
+      window.scrollTo(0, 0);
+    }
+  </script>
 </html>

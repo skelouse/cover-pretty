@@ -53,8 +53,7 @@ func HtmlOutput(profile, outfile string) error {
 	}
 	d.Header = filePrefix
 
-	d.Folders = make(map[string]*templateFolder, 0)
-
+	d.Files = make(map[string]*templateFile)
 	d.RawFiles = make([]*templateFile, len(profiles))
 	for idx, profile := range profiles {
 		fn := profile.FileName
@@ -82,32 +81,38 @@ func HtmlOutput(profile, outfile string) error {
 			Name:     fileSuffix,
 			Body:     template.HTML(buf.String()),
 			Coverage: percentCovered(profile),
+			Files:    make(map[string]*templateFile),
 		}
 		d.RawFiles[idx] = tmplFile
 
-		if strings.Contains(fileSuffix, "/") {
-			fileName := filepath.Base(fileSuffix)
-			folderName := strings.TrimSuffix(fileSuffix, fileName)
-			folder, ok := d.Folders[folderName]
-			if ok == false {
-				folder = &templateFolder{
-					Files: make([]*templateFile, 0),
-				}
-				d.Folders[folderName] = folder
-			}
-			tmplFile.Name = fileName
-			folder.Files = append(folder.Files, tmplFile)
-		} else {
-
-			folder, ok := d.Folders["/"]
-			if ok == false {
-				folder = &templateFolder{
-					Files: make([]*templateFile, 0),
-				}
-				d.Folders["/"] = folder
-			}
-			folder.Files = append(folder.Files, tmplFile)
+		path := strings.Split(fileSuffix, "/")
+		if len(path) == 1 {
+			d.Files[fileSuffix] = tmplFile
+			continue
 		}
+
+		location := d.Files
+		for idx, dir := range path {
+			if idx == len(path)-1 {
+				fileSuffix = dir
+				continue
+			}
+			tmplFile.Indent = idx * 3
+
+			_loc, ok := location[dir]
+			if ok == false {
+				_loc = &templateFile{
+					Name:   dir,
+					IsDir:  true,
+					Indent: tmplFile.Indent,
+					Files:  make(map[string]*templateFile),
+				}
+				location[dir] = _loc
+			}
+
+			location = _loc.Files
+		}
+		location[fileSuffix] = tmplFile
 	}
 
 	var out *os.File
@@ -214,13 +219,9 @@ func colors() string {
 	return buf.String()
 }
 
-type templateFolder struct {
-	Files []*templateFile
-}
-
 type templateData struct {
 	Header   string
-	Folders  map[string]*templateFolder
+	Files    map[string]*templateFile
 	RawFiles []*templateFile
 	Set      bool
 }
@@ -232,19 +233,21 @@ type templateData struct {
 // for package main. It returns the empty string if there is
 // a problem.
 func (td templateData) PackageName() string {
-	if len(td.Folders) == 0 {
+	if len(td.Files) == 0 {
 		return ""
 	}
 
-	for _, folder := range td.Folders {
+	for _, folder := range td.Files {
 		if len(folder.Files) == 0 {
 			continue
 		}
-		parts := strings.Split(folder.Files[0].Name, "/")
-		if len(parts) < 2 {
-			return ""
+		for _, file := range folder.Files {
+			parts := strings.Split(file.Name, "/")
+			if len(parts) < 2 {
+				return ""
+			}
+			return parts[len(parts)-2]
 		}
-		return parts[len(parts)-2]
 	}
 	return ""
 }
@@ -254,4 +257,7 @@ type templateFile struct {
 	Name     string
 	Body     template.HTML
 	Coverage float64
+	IsDir    bool
+	Files    map[string]*templateFile
+	Indent   int
 }
