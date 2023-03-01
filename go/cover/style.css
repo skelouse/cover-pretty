@@ -1,27 +1,41 @@
 body {
-    background: black;
-    color: rgb(80, 80, 80);
+  background: black;
+  color: rgb(80, 80, 80);
 }
-body, pre, #legend span {
-    font-family: Menlo, monospace;
-    font-weight: bold;
+body,
+pre,
+#legend span {
+  font-family: Menlo, monospace;
+  font-weight: bold;
 }
 #topbar {
-    background: black;
-    top: 0; left: 0; right: 0;
-    height: 42px;
-    border-bottom: 1px solid rgb(80, 80, 80);
+  background: black;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px;
+  border-bottom: 1px solid rgb(80, 80, 80);
 }
-#nav, #legend {
-    float: left;
-    margin-left: 10px;
+#nav,
+#legend {
+  float: left;
+  margin-left: 10px;
 }
 #legend {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 #nav {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 #legend span {
-    margin: 0 5px;
+  margin: 0 5px;
 }
+
+/* Add padding to a nested optgroup, note simply doing "padding-left: 10px" will not work */
+.folder-file-select-2 optgroup {
+    padding-left: 10px;
+  }
+  
+  .folder-file-select-2 optgroup label {
+    text-indent: -10px;
+  }
