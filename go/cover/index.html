@@ -70,14 +70,14 @@
 				return;
 			files.value = part;
 			visible.style.display = 'block';
-			location.hash = part;
+			location.hash = "_" + part;
 		}
 		function onChange() {
 			select(files.value);
 			window.scrollTo(0, 0);
 		}
 		if (location.hash != "") {
-			select(location.hash.substr(1));
+			select(location.hash.substr(2));
 		}
 		if (!visible) {
 			select("file0");
