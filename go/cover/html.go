@@ -15,7 +15,6 @@ import (
 	"strings"
 
 	"github.com/skelouse/cover-pretty/go/browser"
-
 	"golang.org/x/tools/cover"
 )
 
@@ -100,7 +99,7 @@ func HtmlOutput(profile, outfile string) error {
 			tmplFile.Indent = idx * 3
 
 			_loc, ok := location[dir]
-			if ok == false {
+			if !ok {
 				_loc = &templateFile{
 					Name:   dir,
 					IsDir:  true,
@@ -115,31 +114,66 @@ func HtmlOutput(profile, outfile string) error {
 		location[fileSuffix] = tmplFile
 	}
 
-	var out *os.File
+	var jsOut, htmlOut *os.File
+	var jsFilePath, htmlFilePath string
+
 	if outfile == "" {
 		var dir string
 		dir, err = os.MkdirTemp("", "cover")
 		if err != nil {
 			return err
 		}
-		out, err = os.Create(filepath.Join(dir, "coverage.html"))
+
+		jsFilePath = filepath.Join(dir, "coverage.js")
+		htmlFilePath = filepath.Join(dir, "index.html")
+
+		jsOut, err = os.Create(jsFilePath)
+		if err != nil {
+			return err
+		}
+		defer jsOut.Close()
+
+		htmlOut, err = os.Create(htmlFilePath)
+		if err != nil {
+			return err
+		}
+		defer htmlOut.Close()
+
 	} else {
-		out, err = os.Create(outfile)
+		jsOut, err = os.Create(outfile)
+		if err != nil {
+			return err
+		}
+		defer jsOut.Close()
+
+		// If outfile is provided, generate the HTML file next to the JavaScript file
+		htmlFilePath = outfile[:len(outfile)-len(filepath.Ext(outfile))] + ".html"
+		htmlOut, err = os.Create(htmlFilePath)
+		if err != nil {
+			return err
+		}
+		defer htmlOut.Close()
 	}
-	if err != nil {
-		return err
-	}
-	err = htmlTemplate.Execute(out, d)
-	if err2 := out.Close(); err == nil {
-		err = err2
-	}
+
+	// Execute JavaScript template
+	// err = jsTemplate.Execute(jsOut, d)
+	// if err != nil {
+	// 	return err
+	// }
+
+	// Execute HTML template
+	err = generateHTML(htmlFilePath, d)
 	if err != nil {
 		return err
 	}
 
+	// Print paths to generated files
+	fmt.Printf("HTML and JavaScript generated:\n- %s\n", htmlFilePath)
+
+	// Optionally, open the HTML file in a browser
 	if outfile == "" {
-		if !browser.Open("file://" + out.Name()) {
-			fmt.Fprintf(os.Stderr, "HTML output written to %s\n", out.Name())
+		if !browser.Open("file://" + strings.Replace(htmlFilePath, "index.html", "/index.html", -1)) {
+			fmt.Fprintf(os.Stderr, "HTML output written to %s\n", htmlFilePath)
 		}
 	}
 
@@ -195,28 +229,6 @@ func htmlGen(w io.Writer, src []byte, boundaries []cover.Boundary) error {
 		}
 	}
 	return dst.Flush()
-}
-
-// rgb returns an rgb value for the specified coverage value
-// between 0 (no coverage) and 10 (max coverage).
-func rgb(n int) string {
-	if n == 0 {
-		return "rgb(192, 0, 0)" // Red
-	}
-	// Gradient from gray to green.
-	r := 128 - 12*(n-1)
-	g := 128 + 12*(n-1)
-	b := 128 + 3*(n-1)
-	return fmt.Sprintf("rgb(%v, %v, %v)", r, g, b)
-}
-
-// colors generates the CSS rules for coverage colors.
-func colors() string {
-	var buf strings.Builder
-	for i := 0; i < 11; i++ {
-		fmt.Fprintf(&buf, ".cov%v { color: %v }\n", i, rgb(i))
-	}
-	return buf.String()
 }
 
 type templateData struct {
