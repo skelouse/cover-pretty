@@ -35,13 +35,11 @@ cd ..
 go run .
 ```
 
-## Semi-Live reloading
-Run the [example](#Example) then
 
-Optional Uncomment refresh line in [index.html](go/cover/index.html#L4)
+## Page Development
 
-Open [index.html](assets/index.html) in your browser
-
-```shell
-air
+```
+cd go/cover/react-coverage
+npm i
+npm run dev
 ```

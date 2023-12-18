@@ -1,0 +1,13 @@
+.file-content {
+  margin-left: 50px;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+.file-content .cov0 {
+  color: #cc0000;
+}
+
+.file-content .cov8 {
+  color: #00cc00;
+}
